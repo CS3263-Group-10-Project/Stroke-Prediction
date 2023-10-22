@@ -8,8 +8,8 @@ print("Initial Data:")
 print(data.head(10))
 print("\n")
 
-# Drop rows with 'N/A' in 'bmi' column
-data = data[data['bmi'] != 'N/A']
+# Drop the entire rows with 'N/A' in 'bmi' column
+data.dropna(subset=['bmi'], inplace=True)
 
 # # Drop the 'id' column
 # data.drop(columns=['id'], inplace=True)
