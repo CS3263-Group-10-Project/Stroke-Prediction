@@ -2,6 +2,7 @@ import logging
 import pandas as pd
 from pgmpy.models import BayesianNetwork
 from pgmpy.estimators import MaximumLikelihoodEstimator
+import pickle
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -9,11 +10,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # Load the data
 data = pd.read_csv('../data/transformed_data.csv')
 
-# Drop the id column
-data.drop(columns=['id'], inplace=True)
-
-# Use only the first 100 rows for training
-data_subset = data.iloc[:100]
+# Use the first 75% of the data for training
+data_subset = data.iloc[:int(len(data) * 0.80)].copy()
 
 # Adjust the edges to match dataset columns, removing references to "Lifestyle"
 edges = [
@@ -25,6 +23,7 @@ edges = [
     ("hypertension", "stroke"),
     ("heart_disease", "stroke"),
     ("ever_married", "stroke"),
+    ("Residence_type", "stroke"),
     ("isPrivate", "stroke"),
     ("isSelfEmployed", "stroke"),
     ("avg_glucose_level", "stroke"),
@@ -44,3 +43,6 @@ model.fit(data_subset, estimator=MaximumLikelihoodEstimator)
 
 # Display the learned CPDs for a sample node (e.g., "stroke")
 print(model.get_cpds("stroke"))
+
+with open("saved_model.pkl", "wb") as file:
+    pickle.dump(model, file)
