@@ -9,7 +9,7 @@ with open("saved_model.pkl", "rb") as file:
 data = pd.read_csv('../data/transformed_data.csv')
 
 # use the last 25% of the data for testing
-test_data = data.iloc[int(len(data) * 0.80):].copy()
+test_data = data.iloc[int(len(data) * 0.5):].copy()
 test_data.drop(columns=['stroke'], inplace=True)  # Assuming 'stroke' is what you want to predict
 
 # 2. Make Predictions
@@ -21,8 +21,12 @@ for index, row in test_data.iterrows():
     prediction = inference.map_query(variables=['stroke'], evidence=row.to_dict())
     predicted_values.append(prediction['stroke'])
 
+# print the predicted values and the ground truth
+print("Predicted Values:", predicted_values)
+print("Actual Values:", data.iloc[int(len(data) * 0.5):]['stroke'].tolist())
+
 # 3. Evaluate Accuracy (remains the same)
-actual_values = data.iloc[int(len(data) * 0.80):]['stroke'].tolist()
+actual_values = data.iloc[int(len(data) * 0.5):]['stroke'].tolist()
 correct_predictions = sum([1 for pred, actual in zip(predicted_values, actual_values) if pred == actual])
 accuracy = correct_predictions / len(actual_values) * 100
 

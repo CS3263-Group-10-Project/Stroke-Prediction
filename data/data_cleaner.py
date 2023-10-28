@@ -27,14 +27,16 @@ def categorize_bmi(value):
 def categorize_age(value):
     return int(value // 10)
 
-
 # Load the dataset
 data = pd.read_csv('raw.csv')
 
 # Drop the entire rows with 'N/A' in 'bmi' column
 data.dropna(subset=['bmi'], inplace=True)
 
+# make sure the gender col is int
 data['gender'] = data['gender'].map({'Male': 0, 'Female': 1})
+data.dropna(subset=['gender'], inplace=True)
+data['gender'] = data['gender'].astype(int)
 data['ever_married'] = data['ever_married'].map({'Yes': 1, 'No': 0})
 data['isPrivate'] = data['work_type'].apply(lambda x: 1 if x == 'Private' else 0)
 data['isSelfEmployed'] = data['work_type'].apply(lambda x: 1 if x == 'Self-employed' else 0)
@@ -65,6 +67,17 @@ data = data[cols]
 
 # drop the 'id' column
 data.drop(columns=['id'], inplace=True)
+
+
+# duplicate the rows with 'stroke' = 1 10 times to balance the dataset
+stroke_data = data[data['stroke'] == 1]
+data = data._append([stroke_data] * 9, ignore_index=True)
+
+# shuffle the dataset
+data = data.sample(frac=1).reset_index(drop=True)
+
+# count the number of rows with 'stroke' = 1 and 'stroke' = 0
+print(data['stroke'].value_counts())
 
 # Save the transformed data to a CSV file
 data.to_csv('transformed_data.csv', index=False)

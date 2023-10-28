@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 data = pd.read_csv('../data/transformed_data.csv')
 
 # Use the first 75% of the data for training
-data_subset = data.iloc[:int(len(data) * 0.80)].copy()
+data_subset = data.iloc[:int(len(data) * 0.5)].copy()
 
 # Adjust the edges to match dataset columns, removing references to "Lifestyle"
 edges = [
