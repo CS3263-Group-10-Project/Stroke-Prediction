@@ -71,7 +71,7 @@ data.drop(columns=['id'], inplace=True)
 
 # duplicate the rows with 'stroke' = 1 10 times to balance the dataset
 stroke_data = data[data['stroke'] == 1]
-data = data._append([stroke_data] * 9, ignore_index=True)
+data = data._append([stroke_data] * 17, ignore_index=True)
 
 # shuffle the dataset
 data = data.sample(frac=1).reset_index(drop=True)

@@ -6,6 +6,10 @@ import matplotlib.pyplot as plt
 with open("saved_model.pkl", "rb") as file:
     loaded_model = pickle.load(file)
 
+for cpd in loaded_model.get_cpds():
+    print(cpd)
+    print("-----\n")
+
 # Convert Bayesian Model to Directed Graph
 G = nx.DiGraph()
 G.add_edges_from(loaded_model.edges())
