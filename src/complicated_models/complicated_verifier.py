@@ -2,11 +2,11 @@ import pickle
 import pandas as pd
 from pgmpy.inference import VariableElimination
 
-with open("saved_model.pkl", "rb") as file:
+with open("saved_complicated_model.pkl", "rb") as file:
     loaded_model = pickle.load(file)
 
 # 1. Prepare the Test Data
-data = pd.read_csv('../data/transformed_data.csv')
+data = pd.read_csv('../../data/transformed_data.csv')
 
 # use the last 25% of the data for testing
 test_data = data.iloc[int(len(data) * 0.8):].copy()

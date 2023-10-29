@@ -27,6 +27,7 @@ def categorize_bmi(value):
 def categorize_age(value):
     return int(value // 10)
 
+
 # Load the dataset
 data = pd.read_csv('raw.csv')
 
@@ -68,13 +69,12 @@ data = data[cols]
 # drop the 'id' column
 data.drop(columns=['id'], inplace=True)
 
-
 # duplicate the rows with 'stroke' = 1 10 times to balance the dataset
 stroke_data = data[data['stroke'] == 1]
 data = data._append([stroke_data] * 17, ignore_index=True)
 
-# shuffle the dataset
-data = data.sample(frac=1).reset_index(drop=True)
+# set seed to 0 to ensure reproducibility
+data = data.sample(frac=1, random_state=0).reset_index(drop=True)
 
 # count the number of rows with 'stroke' = 1 and 'stroke' = 0
 print(data['stroke'].value_counts())
